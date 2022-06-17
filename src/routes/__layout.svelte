@@ -15,13 +15,15 @@
       // console.log("user is signed in")
     }
   })
+
+  let y
 </script>
 
 <div>
   {#if $user}
-  <Navbar />
-  <slot></slot>
+    <Navbar />
+    <slot></slot>
   {:else}
-  <Auth />
+    <Auth />
   {/if}
 </div>
