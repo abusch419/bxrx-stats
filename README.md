@@ -1,3 +1,6 @@
+# BXRX Stats
+Tell the app which shows you've seen and see some stats. 
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
