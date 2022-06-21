@@ -31,7 +31,6 @@ export const loadUserSongs = async (user_id) => {
     userSong.timesSeen = count
   })
 
-  console.log(data)
   data.sort(compareTimesSeen)
   userSongs.set(data)
 }

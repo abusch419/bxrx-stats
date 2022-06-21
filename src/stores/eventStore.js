@@ -76,13 +76,12 @@ export const eventIdsBelongingToUser = async (user_id) => {
 
 export const loadEventsBelongingToUser = async (user_id) => {
   const userEventIds = await eventIdsBelongingToUser(user_id)
-  console.log(userEventIds)
 
   const { data, error } = await supabase.from('events').select().in('id', userEventIds)
   if (error) {
     return console.error(error)
   }
-  console.log(data)
+
   userEvents.set(data)
 }
 

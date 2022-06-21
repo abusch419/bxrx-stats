@@ -4,33 +4,43 @@
   import { user } from '../stores/authStore.js'
   import Doughnut from "svelte-chartjs/src/Doughnut.svelte"
 
+  let songLabels = []
+  let timesEachSongWasSeen = []
+  let data
+  let options
+
   onMount(async () => {
-    await loadUserSongs($user.id)
-  })
+    await loadUserSongs($user.id).then(() => {
 
-  const songLabels = $userSongs.map((song) => song.name)
-  const timesEachSongWasSeen = $userSongs.map((song) => song.timesSeen)
+      const songLabels = $userSongs.map((song) => song.name)
+      const timesEachSongWasSeen = $userSongs.map((song) => song.timesSeen)
 
-  let data = {
-    labels: [...songLabels],
-    datasets: [
-      {
-        data: [...timesEachSongWasSeen],
-        backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-        hoverBackgroundColor: [
-          "#FF5A5E",
-          "#5AD3D1",
-          "#FFC870",
-          "#A8B3C5",
-          "#616774"
+      data = {
+        labels: [...songLabels],
+        datasets: [
+          {
+            data: [...timesEachSongWasSeen],
+            backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
+            hoverBackgroundColor: [
+              "#FF5A5E",
+              "#5AD3D1",
+              "#FFC870",
+              "#A8B3C5",
+              "#616774"
+            ]
+          }
         ]
       }
-    ]
-  };
 
-  let options = {
-    responsive: true
-  }
+      options = {
+        responsive: true
+      }
+
+    })
+  })
+
+
+
 </script>
 
 <div class="container mx-auto my-6 max-w-lg">
