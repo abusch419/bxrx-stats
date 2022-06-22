@@ -7,23 +7,18 @@
   import "../app.css"
 
   user.set(supabase.auth.user())
+  console.log(supabase.auth.user())
 
   supabase.auth.onAuthStateChange((event, session) => {
-    // console.log(event)
     user.set(session?.user)
-    if (session?.user) {
-      // console.log("user is signed in")
-    }
   })
-
-  let y
 </script>
 
 <div>
   {#if $user}
-  <Navbar />
-  <slot></slot>
+    <Navbar />
+    <slot></slot>
   {:else}
-  <Auth />
+    <Auth />
   {/if}
 </div>

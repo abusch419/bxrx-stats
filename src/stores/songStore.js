@@ -1,8 +1,9 @@
-import { writable, derived } from "svelte/store";
+import { derived } from "svelte/store";
+import { writable } from 'svelte-local-storage-store'
 import { supabase } from "../supabase.js"
 import { eventIdsBelongingToUser } from './eventStore.js'
 
-export const userSongs = writable([])
+export const userSongs = writable('userSongs', [])
 
 export const songLabels = derived(
   userSongs,

@@ -1,9 +1,10 @@
-import { writable } from "svelte/store";
+// import { writable } from "svelte/store";
+import { writable } from 'svelte-local-storage-store'
 import { supabase } from "../supabase.js"
 
 
-export const events = writable([])
-export const userEvents = writable([])
+export const events = writable('events', [])
+export const userEvents = writable('userEvents', [])
 
 export const loadEvents = async () => {
   console.log("loading events.....")

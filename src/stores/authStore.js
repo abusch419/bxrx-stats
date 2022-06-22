@@ -1,3 +1,3 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte-local-storage-store'
 
-export const user = writable(false)
+export const user = writable('user', false)
