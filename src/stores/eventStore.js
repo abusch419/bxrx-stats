@@ -90,3 +90,26 @@ export const loadEventsBelongingToUser = async (user_id) => {
 export const eventLabel = (event) => {
   return `${event.date} ${event.city}, ${event.state.toUpperCase()}`;
 };
+
+
+export const addEvent = async (newEvent) => {
+  const { data, error } = await supabase.from('events').insert([{ ...newEvent }])
+  if (error) {
+    return console.error(error)
+  }
+
+  // do some setlist parsing 
+  const setlist = data[0].setlist
+  // find set one 
+  // everything between the string "set 1:" and "set 2:", "encore:", or "notes:"
+  console.log(getFirstSetString(setlist.toLowerCase(), 'set 1: ', ' set 2:'))
+
+  console.log("success!")
+}
+
+export const getFirstSetString = (str, start, end) => {
+  const result = str.match(/(?<=set 1:\s+).*?(?=\s+set 2:)/gs);
+
+  return result;
+}
+

@@ -7,7 +7,6 @@
   import "../app.css"
 
   user.set(supabase.auth.user())
-  console.log(supabase.auth.user())
 
   supabase.auth.onAuthStateChange((event, session) => {
     user.set(session?.user)
@@ -16,9 +15,9 @@
 
 <div>
   {#if $user}
-    <Navbar />
-    <slot></slot>
+  <Navbar />
+  <slot></slot>
   {:else}
-    <Auth />
+  <Auth />
   {/if}
 </div>
