@@ -1,8 +1,18 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 import { supabase } from "../supabase.js"
 import { eventIdsBelongingToUser } from './eventStore.js'
 
 export const userSongs = writable([])
+
+export const songLabels = derived(
+  userSongs,
+  $userSongs => $userSongs.map((song) => song.name)
+)
+
+export const timesEachSongWasSeen = derived(
+  userSongs,
+  $userSongs => $userSongs.map((song) => song.timesSeen)
+)
 
 const compareTimesSeen = (a, b) => {
   if (a.timesSeen > b.timesSeen) {
