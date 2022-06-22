@@ -55,6 +55,7 @@
 
             <NavLink href="/" title="My Shows" />
             <NavLink href="/events/edit" title="Edit My Shows" />
+            <NavLink href="/events/add" title="Add Shows" />
             <NavLink href="/stats" title="Stats" />
 
           </div>
