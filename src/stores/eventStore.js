@@ -1,6 +1,9 @@
 // import { writable } from "svelte/store";
 import { writable } from 'svelte-local-storage-store'
 import { supabase } from "../supabase.js"
+import { checkIfSongExists } from './songStore.js'
+import { getArrayOfSongsFromSetlistString } from '../helpers/getSongArrayFromSetlist.js'
+import { beforeNavigate } from '$app/navigation'
 
 
 export const events = writable('events', [])
@@ -98,18 +101,26 @@ export const addEvent = async (newEvent) => {
     return console.error(error)
   }
 
-  // do some setlist parsing 
-  const setlist = data[0].setlist
-  // find set one 
-  // everything between the string "set 1:" and "set 2:", "encore:", or "notes:"
-  console.log(getFirstSetString(setlist.toLowerCase(), 'set 1: ', ' set 2:'))
+  const arrayOfSongsFromSetlist = getArrayOfSongsFromSetlistString(data[0].setlist)
+  console.log(arrayOfSongsFromSetlist)
+  let songExists
+  let newSongs = []
+  for await (const song of arrayOfSongsFromSetlist) {
+    songExists = await checkIfSongExists(song)
+    if (songExists) {
+      console.log('song exists')
+      // make a user song event bridge for these songs
+    } else {
+      console.log('song doesnt exist')
+      newSongs.push(song)
+    }
+  }
+  if (newSongs.length > 0) {
+    alert("These songs had never been added before. Does that seem right?" + newSongs)
+  }
 
-  console.log("success!")
+  //add new songs to database 
+  // we need to collect data about if the song is a cover and what album it's on
+  // for each song show a dialog box 
+  console.log("event added successfully!")
 }
-
-export const getFirstSetString = (str, start, end) => {
-  const result = str.match(/(?<=set 1:\s+).*?(?=\s+set 2:)/gs);
-
-  return result;
-}
-

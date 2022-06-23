@@ -2,7 +2,7 @@
   import { DateInput } from 'date-picker-svelte'
   let date = new Date()
   import { setlistPlaceholder } from '../../helpers/setlistPlaceholder.js'
-  import { addEvent, getFirstSetString } from "../../stores/eventStore.js"
+  import { addEvent } from "../../stores/eventStore.js"
 
   async function onSubmit(e) {
     const formData = new FormData(e.target);
@@ -12,10 +12,8 @@
       const [key, value] = field;
       data[key] = value;
     }
-    console.log(data)
-    // await addEvent(data)
-    const firstSet = getFirstSetString(data.setlist.toLowerCase(), 'set 1: ', ' set 2:')
-    console.log(firstSet)
+
+    await addEvent(data)
   }
 </script>
 

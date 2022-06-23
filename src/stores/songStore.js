@@ -67,3 +67,14 @@ const timesSeen = (song, userSongIds) => {
 
   return count
 }
+
+export const checkIfSongExists = async (song) => {
+  const { data, error } = await supabase
+    .from('songs')
+    .select()
+  if (error) {
+    console.error(error)
+  }
+  const songNames = data.map(song => song.name)
+  return songNames.includes(song)
+}
