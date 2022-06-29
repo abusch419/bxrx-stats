@@ -1,98 +1,51 @@
 <script>
-  import { setlistPlaceholder } from '../../helpers/setlistPlaceholder.js'
-  import { addEvent } from "../../stores/eventStore.js"
-  import SveltyPicker from 'svelty-picker'
+  import { checkForNewSongs, addEvent } from "../../stores/eventStore.js"
+  import { addNewSongs } from "../../stores/songStore.js"
+  import { addSongEventBridge } from "../../stores/songEventBridgeStore.js"
+  import Page1 from '../../components/Page1.svelte';
+  import Page2 from '../../components/Page2.svelte';
 
-  let myDate = new Date().toISOString().split('T')[0]
+  const pages = [Page1, Page2];
 
-  async function onSubmit(e) {
-    const formData = new FormData(e.target);
+  let page = 0;
 
-    const data = {};
-    for (let field of formData) {
-      const [key, value] = field;
-      data[key] = value;
+  let pagesState = [];
+
+  let newSongs = []
+
+  async function onSubmit(values) {
+    if (page === pages.length - 1) {
+      // On our final page with POST our data somewhere
+      pagesState[page] = values;
+      pagesState = pagesState; // Triggering update
+
+      const newEvent = await addEvent(pagesState[0].event)
+      const newSongs = await addNewSongs(pagesState[1].song)
+      console.log(newEvent)
+      console.log(newSongs)
+      window.location.href = '/'
+    } else {
+      // If we're not on the last page, store our data and increase a step
+      pagesState[page] = values;
+      pagesState = pagesState; // Triggering update
+
+      newSongs = await checkForNewSongs(pagesState)
+      // if there aren't any new songs to add just submit the event as is
+      if (newSongs.length < 1) {
+        await addEvent(pagesState[0].event)
+        window.location.href = '/'
+      }
+
+      page += 1;
     }
+  }
 
-    console.log(data)
-    await addEvent(data)
+  function onBack(values) {
+    if (page === 0) return;
+    pagesState[page] = values;
+    pagesState = pagesState; // Triggering update
+    page -= 1;
   }
 </script>
 
-<div class="bg-white">
-  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto">
-
-      <form on:submit|preventDefault={onSubmit} class="space-y-8 divide-y divide-gray-200">
-        <div class="space-y-8 divide-y divide-gray-200">
-          <div>
-            <div>
-              <h3 class="text-lg leading-6 font-medium text-gray-900">Add an event</h3>
-            </div>
-
-            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-              <div class="sm:col-span-4">
-                <label for="date" class="block text-sm font-medium text-gray-700"> Date </label>
-                <div class="flex">
-                  <SveltyPicker inputClasses="form-control" format="yyyy-mm-dd" bind:value={myDate}>
-                  </SveltyPicker>
-                  <svg style="margin-left: -40px; z-index: 5; margin-top: 4px;" class="h-8 w-8 text-gray-400"
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0
-                      00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-              </div>
-
-              <div class="sm:col-span-4">
-                <label for="venue" class="block text-sm font-medium text-gray-700"> Venue </label>
-                <div class="mt-1">
-                  <input type="text" name="venue" id="venue"
-                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                </div>
-              </div>
-
-              <div class="sm:col-span-4">
-                <label for="city" class="block text-sm font-medium text-gray-700"> City </label>
-                <div class="mt-1">
-                  <input type="text" name="city" id="state"
-                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                </div>
-              </div>
-
-              <div class="sm:col-span-4">
-                <label for="state" class="block text-sm font-medium text-gray-700"> State </label>
-                <div class="mt-1">
-                  <input type="text" name="state" id="state" placeholder="Use GA for Georgia"
-                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                </div>
-              </div>
-
-              <div class="sm:col-span-6">
-                <label for="setlist" class="block text-sm font-medium text-gray-700"> Setlist </label>
-                <div class="mt-1">
-                  <textarea id="setlist" name="setlist" rows="3" placeholder={setlistPlaceholder}
-                    style="min-height: 400px;"
-                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
-                </div>
-                <p class="mt-2 text-sm text-gray-500">Paste or write the setlist here</p>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-5">
-          <div class="flex justify-end">
-            <button type="button"
-              class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Cancel</button>
-            <button type="submit"
-              class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
-          </div>
-        </div>
-
-      </form>
-
-    </div>
-  </div>
-</div>
+<svelte:component this={pages[page]} {onSubmit} {onBack} initialValues={pagesState[page]} {newSongs} />

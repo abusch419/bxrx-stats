@@ -78,3 +78,20 @@ export const checkIfSongExists = async (song) => {
   const songNames = data.map(song => song.name)
   return songNames.includes(song)
 }
+
+export const addNewSongs = async (newSongs) => {
+  for (const song of newSongs) {
+    console.log("about to add song")
+    console.log(song)
+    if (song.cover) { song.album_id = null }
+    const { data, error } = await supabase
+      .from('songs')
+      .insert([{ ...song }])
+
+    if (error) {
+      return console.error(error)
+    }
+    console.log("song added!")
+  }
+  console.log("done adding songs")
+}

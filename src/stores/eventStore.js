@@ -3,8 +3,6 @@ import { writable } from 'svelte-local-storage-store'
 import { supabase } from "../supabase.js"
 import { checkIfSongExists } from './songStore.js'
 import { getArrayOfSongsFromSetlistString } from '../helpers/getSongArrayFromSetlist.js'
-import { beforeNavigate } from '$app/navigation'
-
 
 export const events = writable('events', [])
 export const userEvents = writable('userEvents', [])
@@ -95,13 +93,10 @@ export const eventLabel = (event) => {
 };
 
 
-export const addEvent = async (newEvent) => {
-  const { data, error } = await supabase.from('events').insert([{ ...newEvent }])
-  if (error) {
-    return console.error(error)
-  }
+export const checkForNewSongs = async (newEvent) => {
+  console.log(newEvent)
 
-  const arrayOfSongsFromSetlist = getArrayOfSongsFromSetlistString(data[0].setlist)
+  const arrayOfSongsFromSetlist = getArrayOfSongsFromSetlistString(newEvent[0].event.setlist)
   console.log(arrayOfSongsFromSetlist)
   let songExists
   let newSongs = []
@@ -115,13 +110,17 @@ export const addEvent = async (newEvent) => {
       newSongs.push(song)
     }
   }
-  if (newSongs.length > 0) {
-    alert("These songs had never been added before. Does that seem right?" + newSongs)
-    // confirm("These songs had never been added before. Does that seem right?" + newSongs)
+  // if (newSongs.length > 0) {
+  //   alert("These songs had never been added before. Does that seem right?" + newSongs)
+  // }
+  return newSongs
+}
+
+export const addEvent = async (newEvent) => {
+  const { data, error } = await supabase.from('events').insert([{ ...newEvent }])
+  if (error) {
+    return console.error(error)
   }
 
-  //add new songs to database 
-  // we need to collect data about if the song is a cover and what album it's on
-  // for each song show a dialog box 
-  console.log("event added successfully!")
+  console.log("event added successfully!" + data)
 }
