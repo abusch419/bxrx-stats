@@ -1,8 +1,8 @@
 <script>
   import { setlistPlaceholder } from '../../helpers/setlistPlaceholder.js'
   import { addEvent } from "../../stores/eventStore.js"
-
   import SveltyPicker from 'svelty-picker'
+
   let myDate = new Date().toISOString().split('T')[0]
 
   async function onSubmit(e) {
