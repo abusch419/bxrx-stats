@@ -1,8 +1,9 @@
 <script>
-  import { DateInput } from 'date-picker-svelte'
-  let date = new Date()
   import { setlistPlaceholder } from '../../helpers/setlistPlaceholder.js'
   import { addEvent } from "../../stores/eventStore.js"
+
+  import SveltyPicker from 'svelty-picker'
+  let myDate = new Date().toISOString().split('T')[0]
 
   async function onSubmit(e) {
     const formData = new FormData(e.target);
@@ -13,6 +14,7 @@
       data[key] = value;
     }
 
+    console.log(data)
     await addEvent(data)
   }
 </script>
@@ -32,9 +34,10 @@
               <div class="sm:col-span-4">
                 <label for="date" class="block text-sm font-medium text-gray-700"> Date </label>
                 <div class="flex">
-                  <DateInput bind:value={date} format={"yyyy-MM-dd"} />
-                  <svg style="margin-left: -40px; z-index: 5;" class="h-8 w-8 text-gray-400" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
+                  <SveltyPicker inputClasses="form-control" format="yyyy-mm-dd" bind:value={myDate}>
+                  </SveltyPicker>
+                  <svg style="margin-left: -40px; z-index: 5; margin-top: 4px;" class="h-8 w-8 text-gray-400"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0
                       00-2 2v12a2 2 0 002 2z" />
                   </svg>

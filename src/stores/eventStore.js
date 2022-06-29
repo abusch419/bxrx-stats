@@ -117,6 +117,7 @@ export const addEvent = async (newEvent) => {
   }
   if (newSongs.length > 0) {
     alert("These songs had never been added before. Does that seem right?" + newSongs)
+    // confirm("These songs had never been added before. Does that seem right?" + newSongs)
   }
 
   //add new songs to database 
