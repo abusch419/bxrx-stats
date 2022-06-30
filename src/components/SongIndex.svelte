@@ -3,6 +3,7 @@
   import { loadUserSongs, userSongs, songLabels, timesEachSongWasSeen } from '../stores/songStore.js'
   import { user } from '../stores/authStore.js'
   import Doughnut from "svelte-chartjs/src/Doughnut.svelte"
+  import { maximallyDifferentHexCodes } from '../helpers/maximallyDifferentHexCodes.js'
 
   let data
   let options
@@ -15,14 +16,8 @@
       datasets: [
         {
           data: [...$timesEachSongWasSeen],
-          backgroundColor: ["#F7464A", "#46BFBD", "#FDB45C", "#949FB1", "#4D5360"],
-          hoverBackgroundColor: [
-            "#FF5A5E",
-            "#5AD3D1",
-            "#FFC870",
-            "#A8B3C5",
-            "#616774"
-          ]
+          backgroundColor: maximallyDifferentHexCodes,
+          hoverBackgroundColor: maximallyDifferentHexCodes
         }
       ]
     }

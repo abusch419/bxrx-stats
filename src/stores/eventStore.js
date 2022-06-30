@@ -92,11 +92,14 @@ export const eventLabel = (event) => {
   return `${event.date} ${event.city}, ${event.state.toUpperCase()}`;
 };
 
+export const getAllSongsFromNewEvent = (newEvent) => {
+  return getArrayOfSongsFromSetlistString(newEvent[0].setlist)
+}
 
 export const checkForNewSongs = async (newEvent) => {
   console.log(newEvent)
 
-  const arrayOfSongsFromSetlist = getArrayOfSongsFromSetlistString(newEvent[0].event.setlist)
+  const arrayOfSongsFromSetlist = getArrayOfSongsFromSetlistString(newEvent.setlist)
   console.log(arrayOfSongsFromSetlist)
   let songExists
   let newSongs = []
@@ -110,9 +113,7 @@ export const checkForNewSongs = async (newEvent) => {
       newSongs.push(song)
     }
   }
-  // if (newSongs.length > 0) {
-  //   alert("These songs had never been added before. Does that seem right?" + newSongs)
-  // }
+
   return newSongs
 }
 
@@ -123,4 +124,5 @@ export const addEvent = async (newEvent) => {
   }
 
   console.log("event added successfully!" + data)
+  return data
 }
