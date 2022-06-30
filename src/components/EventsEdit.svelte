@@ -59,7 +59,7 @@
 	</form>
 </div>
 
-<!-- <div class="px-4 sm:px-6 lg:px-8">
+<div class="px-4 sm:px-6 lg:px-8">
 	<div class="sm:flex sm:items-center">
 		<div class="sm:flex-auto">
 			<h1 class="text-xl font-semibold text-gray-900">My Shows</h1>
@@ -79,6 +79,12 @@
 		<table class="min-w-full divide-y divide-gray-300">
 			<thead>
 				<tr>
+					<th
+						scope="col"
+						class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+					>
+						Attended
+					</th>
 					<th
 						scope="col"
 						class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 inline-flex"
@@ -104,6 +110,18 @@
 				{#if $events.length > 0}
 					{#each $events as show}
 						<tr>
+							<td class="relative py-4 pl-4 sm:pl-6 pr-3 text-sm">
+								<input
+									class="mt-1 mr-1"
+									id="event-checkbox"
+									type="checkbox"
+									bind:group={shows}
+									on:click={handleChecked(show.id)}
+									value={JSON.stringify(show)}
+									data-event-id={show.id}
+								/>
+							</td>
+
 							<td class="relative py-4 pl-4 sm:pl-6 pr-3 text-sm">
 								<div class="font-medium text-gray-900">{show.date.replaceAll('-', '.')}</div>
 								<div class="mt-1 flex flex-col text-gray-500 sm:block lg:hidden">
@@ -137,4 +155,4 @@
 			</tbody>
 		</table>
 	</div>
-</div> -->
+</div>
