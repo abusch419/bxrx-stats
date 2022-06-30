@@ -7,11 +7,22 @@ import { getArrayOfSongsFromSetlistString } from '../helpers/getSongArrayFromSet
 export const events = writable('events', [])
 export const userEvents = writable('userEvents', [])
 
+const compareDate = (a, b) => {
+  if (a.date > b.date) {
+    return -1;
+  }
+  if (a.date < b.date) {
+    return 1;
+  }
+  return 0;
+}
+
 export const loadEvents = async () => {
   const { data, error } = await supabase.from('events').select()
   if (error) {
     return console.error(error)
   }
+  data.sort(compareDate)
   events.set(data)
 }
 
@@ -46,7 +57,7 @@ export const toggleBelongsToUser = async (event_id, user_id) => {
   }
 
   // don call this function which resets the userEvents writeable 
-  await loadEventsBelongingToUser(user_id)
+  await loadUserEvents(user_id)
 }
 
 const deleteUserEventBridge = async (event_id, user_id) => {
@@ -73,7 +84,7 @@ export const eventIdsBelongingToUser = async (user_id) => {
   return data.map((user_event_bridge) => user_event_bridge.event_id)
 }
 
-export const loadEventsBelongingToUser = async (user_id) => {
+export const loadUserEvents = async (user_id) => {
   const userEventIds = await eventIdsBelongingToUser(user_id)
 
   const { data, error } = await supabase.from('events').select().in('id', userEventIds)
@@ -81,6 +92,7 @@ export const loadEventsBelongingToUser = async (user_id) => {
     return console.error(error)
   }
 
+  data.sort(compareDate)
   userEvents.set(data)
 }
 
