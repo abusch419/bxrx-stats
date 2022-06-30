@@ -3,7 +3,6 @@
   import NavLink from './NavLink.svelte';
 
   const logOut = () => {
-    console.log("logging out")
     supabase.auth.signOut()
   }
 </script>

@@ -8,12 +8,10 @@ export const events = writable('events', [])
 export const userEvents = writable('userEvents', [])
 
 export const loadEvents = async () => {
-  console.log("loading events.....")
   const { data, error } = await supabase.from('events').select()
   if (error) {
     return console.error(error)
   }
-  console.log("done loading events.....")
   events.set(data)
 }
 
@@ -44,7 +42,6 @@ export const toggleBelongsToUser = async (event_id, user_id) => {
     if (error) {
       return console.error(error)
     }
-    console.log(data)
     // don't add an event to the events store - we want to just create a join table record or we'll render the event twice. 
   }
 
@@ -97,19 +94,15 @@ export const getAllSongsFromNewEvent = (newEvent) => {
 }
 
 export const checkForNewSongs = async (newEvent) => {
-  console.log(newEvent)
 
   const arrayOfSongsFromSetlist = getArrayOfSongsFromSetlistString(newEvent.setlist)
-  console.log(arrayOfSongsFromSetlist)
   let songExists
   let newSongs = []
   for await (const song of arrayOfSongsFromSetlist) {
     songExists = await checkIfSongExists(song)
     if (songExists) {
-      console.log('song exists')
-      // make a user song event bridge for these songs
+      // refactor since we don't need this branch
     } else {
-      console.log('song doesnt exist')
       newSongs.push(song)
     }
   }
@@ -123,6 +116,5 @@ export const addEvent = async (newEvent) => {
     return console.error(error)
   }
 
-  console.log("event added successfully!" + data)
   return data
 }

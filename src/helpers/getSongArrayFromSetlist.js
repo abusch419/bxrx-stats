@@ -25,7 +25,6 @@ export const getArrayOfSongsFromSetlistString = (setlistString) => {
 
   let trimmed = []
   result.forEach(song => trimmed.push(song.trim()))
-  console.log(trimmed)
 
   const resultWithoutEmptyStrings = trimmed.filter(song => song != "")
 
