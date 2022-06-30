@@ -1,4 +1,4 @@
-export const setlistPlaceholder = `There are only four rules 🚨: 
+export const setlistPlaceholder = `There are only three rules 🚨: 
 
 1. Make sure you only separate songs with the following symbols:
 ,     (a comma means one song stopped and another started after some time)
@@ -14,8 +14,7 @@ Soundcheck:
 Encore:
 
 3. Any song note markers should use this format: [1] [2] [3] [4] etc. 
-
-4. Before you add a notes section make sure you start with the following:
+Before you add a notes section make sure you start with the following:
 Notes:
 
 Here's an example!

@@ -31,48 +31,11 @@
 	});
 </script>
 
-<div class="container mx-auto my-6 max-w-lg text-center">
-	<h1 class="text-2xl font-bold text-center text-gray-800 md:text-3xl">
-		Add Or Remove Shows From Your Collection
-	</h1>
-	<form class="my-6">
-		<div class="flex flex-col text-sm mb-2">
-			{#each $events as show}
-				<label
-					style="text-transform: capitalize;"
-					class="font-bold mb-2 text-gray-800"
-					for="event-checkbox"
-				>
-					<input
-						class="mt-1 mr-1"
-						id="event-checkbox"
-						type="checkbox"
-						bind:group={shows}
-						on:click={handleChecked(show.id)}
-						value={JSON.stringify(show)}
-						data-event-id={show.id}
-					/>
-					{eventLabel(show)}
-				</label>
-			{/each}
-		</div>
-	</form>
-</div>
-
 <div class="px-4 sm:px-6 lg:px-8">
 	<div class="sm:flex sm:items-center">
 		<div class="sm:flex-auto">
 			<h1 class="text-xl font-semibold text-gray-900">My Shows</h1>
 			<p class="mt-2 text-sm text-gray-700">All of the shows you've attended</p>
-		</div>
-		<div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-			<a href="/events/edit">
-				<button
-					type="button"
-					class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
-					>Update My Shows</button
-				>
-			</a>
 		</div>
 	</div>
 	<div class="-mx-4 mt-10 ring-1 ring-gray-300 sm:-mx-6 md:mx-0 md:rounded-lg">
